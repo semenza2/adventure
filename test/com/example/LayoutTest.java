@@ -28,6 +28,9 @@ public class LayoutTest {
 
     private static Layout layout;
 
+    private Direction[] directionsArray = {new Direction("East", "Siebel Entry")};
+    private String[] itemsArray = {"coin"};
+
     @Before
     public void setUp() throws Exception {
         Gson gson = new Gson();
@@ -46,5 +49,7 @@ public class LayoutTest {
 
     @Test
     public void getRooms() {
+        assertEquals("MatthewsStreet",layout.getRooms()[0].getName());
+        assertEquals("You are on Matthews, outside the Siebel Center", layout.getRooms()[0].getDescription());
     }
 }

@@ -2,7 +2,10 @@ package com.example;
 
 public class Direction {
 
-    public Direction(){}
+    public Direction(String n, String r){
+        directionName=n;
+        room=r;
+    }
 
     private String directionName;
 

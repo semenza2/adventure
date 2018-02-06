@@ -1,6 +1,7 @@
 package com.example;
 
 import com.google.gson.Gson;
+import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,29 +27,35 @@ public class RoomTest {
             "  ]\n" +
             "}";
 
-    private static Room room;
+    private Direction[] directionsArray = {new Direction("East", "Siebel Entry")};
+    private String[] itemsArray = {"coin"};
+
+    private static Room[] rooms;
 
     @Before
     public void setUp() throws Exception {
         Gson gson = new Gson();
-        room = gson.fromJson(ROOM_JSON,Room.class);
+        Layout layout = gson.fromJson(ROOM_JSON,Layout.class);
+        rooms =layout.getRooms();
     }
 
     @Test
     public void getName() {
-        assertEquals("MatthewsStreet",room.getName());
+        assertEquals("MatthewsStreet",rooms[0].getName());
     }
 
     @Test
     public void getDescription() {
-        assertEquals("You are on Matthews, outside the Siebel Center",room.getDescription());
+        assertEquals("You are on Matthews, outside the Siebel Center",rooms[0].getDescription());
     }
 
     @Test
     public void getDirections() {
+        assertTrue(directionsArray.length == rooms[0].getDirections().length);
     }
 
     @Test
     public void getItems() {
+        assertTrue(Arrays.equals(itemsArray, rooms[0].getItems()));
     }
 }

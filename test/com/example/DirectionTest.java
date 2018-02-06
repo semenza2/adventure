@@ -26,19 +26,22 @@ public class DirectionTest {
             "  ]\n" +
             "}";
 
-    private static Direction direction;
+    private static Direction[] directions;
 
     @Before
     public void setUp() throws Exception {
         Gson gson = new Gson();
-        direction = gson.fromJson(DIRECTION_JSON,Direction.class);
+        Layout layout = gson.fromJson(DIRECTION_JSON,Layout.class);
+        directions =layout.getRooms()[0].getDirections();
     }
 
     @Test
     public void getDirectionName() {
+        assertEquals("East", directions[0].getDirectionName());
     }
 
     @Test
     public void getRoom() {
+        assertEquals("SiebelEntry", directions[0].getRoom());
     }
 }
