@@ -12,6 +12,7 @@ public class Adventure {
     private static ArrayList<String> myItems;
     private static Layout layout;
     private static Room[] rooms;
+    //keeps input as user enters it, to echo later
     private static String originalInput;
     private static boolean gameIsOver=false;
 
@@ -25,6 +26,10 @@ public class Adventure {
         }
     }
 
+    /**
+     * starts the game
+     * @param l is the inputted layout
+     */
     public static void start(Layout l) {
         layout = l;
         myItems = new ArrayList<>();
@@ -36,6 +41,17 @@ public class Adventure {
         }
         itemsToArray();
         statusReport();
+    }
+
+    /**
+     * allows use of an arrayList instead of an array to add and drop items
+     */
+    public static void itemsToArray() {
+        if (currentRoom.getItems() != null) {
+            currentItems = new ArrayList<>(Arrays.asList(currentRoom.getItems()));
+        }else {
+            currentItems = new ArrayList<>();
+        }
     }
 
     /**
@@ -65,12 +81,17 @@ public class Adventure {
         }
     }
 
+    /**
+     * evaluates and acts on the user's input
+     * @param input the user's input in lowercase
+     */
     public static void inputEvaluator(String input) {
         if (input == null) {
             System.out.println("Enter input");
         }
 
         if (input.equals("exit") || input.equals("quit")) {
+            System.out.println(originalInput);
             gameIsOver = true;
             System.exit(0);
         } else if (input.contains("go")) {
@@ -119,19 +140,19 @@ public class Adventure {
         statusReport();
     }
 
+    /**
+     * drop an item into room and remove from my own items
+     * @param item the item to drop into the current room
+     */
     public static void drop(String item) {
         myItems.remove(item);
         currentItems.add(item);
     }
 
-    public static void itemsToArray() {
-        if (currentRoom.getItems() != null) {
-            currentItems = new ArrayList<>(Arrays.asList(currentRoom.getItems()));
-        }else {
-            currentItems = new ArrayList<>();
-        }
-    }
-
+    /**
+     * takes item from current room and adds to my own items
+     * @param item to take from room
+     */
     public static void take(String item) {
         myItems.add(item);
         currentItems.remove(item);
@@ -142,6 +163,10 @@ public class Adventure {
         }
     }
 
+    /**
+     * resets the current room to where the user chooses to go
+     * @param room the next place to move
+     */
     public static void move(String room) {
        for(int i = 0; i < rooms.length; i++) {
            if (rooms[i].getName().equals(room)) {
@@ -153,7 +178,7 @@ public class Adventure {
     }
 
     /**
-     * https://www.geeksforgeeks.org/command-line-arguments-in-java/
+     * main method that runs game
      * @param args
      */
     public static void main(String[] args) {

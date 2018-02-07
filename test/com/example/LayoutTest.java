@@ -28,9 +28,6 @@ public class LayoutTest {
 
     private static Layout layout;
 
-    private Direction[] directionsArray = {new Direction("East", "Siebel Entry")};
-    private String[] itemsArray = {"coin"};
-
     @Before
     public void setUp() throws Exception {
         Gson gson = new Gson();
