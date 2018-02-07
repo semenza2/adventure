@@ -2,13 +2,7 @@ package com.example;
 
 public class Room {
 
-    public Room(String n, String d, Direction[] dr, String[] i){
-        name=n;
-        description=d;
-        directions=dr;
-        items=i;
-
-    }
+    public Room(){}
 
     private String name;
     private String description;
