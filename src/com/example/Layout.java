@@ -7,6 +7,16 @@ public class Layout {
     private String startingRoom;
     private String endingRoom;
     private Room[] rooms;
+    private Monster[] monsters;
+    private Player player;
+
+    public Monster[] getMonsters() {
+        return monsters;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
 
     public String getStartingRoom() {
         return startingRoom;

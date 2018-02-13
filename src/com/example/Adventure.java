@@ -9,6 +9,7 @@ public class Adventure {
 
     private static Room currentRoom = new Room();
     private static ArrayList<String> currentItems;
+    private static ArrayList<String> monstersInRoom;
     private static ArrayList<String> myItems;
     private static Layout layout;
     private static Room[] rooms;
@@ -37,18 +38,27 @@ public class Adventure {
                 currentRoom = rooms[i];
             }
         }
-        itemsToArray();
+        itemsToArrayList();
+        monstersInRoom();
         statusReport();
     }
 
     /**
      * allows use of an arrayList instead of an array to add and drop items
      */
-    public static void itemsToArray() {
+    public static void itemsToArrayList() {
         if (currentRoom.getItems() != null) {
             currentItems = new ArrayList<>(Arrays.asList(currentRoom.getItems()));
         }else {
             currentItems = new ArrayList<>();
+        }
+    }
+
+    public static void monstersInRoom() {
+        if (currentRoom.getMonstersInRoom() != null) {
+            monstersInRoom = new ArrayList<>(Arrays.asList(currentRoom.getMonstersInRoom()));
+        }else {
+            monstersInRoom = new ArrayList<>();
         }
     }
 
@@ -73,6 +83,14 @@ public class Adventure {
             }
         }
 
+        if(monstersInRoom.size() == 0) {
+            System.out.println("This room has no monsters!");
+        } else {
+            System.out.println("The current monsters in your room are: ");
+            for (String e : monstersInRoom) {
+                System.out.println(e);
+            }
+        }
         System.out.println("The directions you can move are: ");
         for (Direction e: currentRoom.getDirections()) {
             System.out.println(e.getDirectionName());
@@ -164,7 +182,8 @@ public class Adventure {
                 for(int j = 0; j < rooms.length; j++) {
                     if (rooms[j].getName().equals(newRoom)) {
                         currentRoom = rooms[j];
-                        itemsToArray();
+                        itemsToArrayList();
+                        monstersInRoom();
                         break;
                     }
                 }
@@ -181,7 +200,7 @@ public class Adventure {
      * @param args
      */
     public static void main(String[] args) {
-        load("https://courses.engr.illinois.edu/cs126/adventure/siebel.json");
+        load("/Users/SarahMenza/Downloads/siebel.json");
         start(layout);
         Scanner scanner = new Scanner(System.in);
         while(!gameIsOver) {
