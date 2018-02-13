@@ -1,4 +1,5 @@
 package com.example;
+import com.google.gson.Gson;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,19 +12,11 @@ public class Adventure {
     private static ArrayList<String> currentItems;
     private static ArrayList<String> monstersInRoom;
     private static ArrayList<String> myItems;
-    private static Layout layout;
+    public static Layout layout;
     private static Room[] rooms;
     //keeps input as user enters it, to echo later
     private static String originalInput;
     private static boolean gameIsOver=false;
-
-    public static void load(String url) {
-        try {
-            layout = Main.makeApiRequest(url);
-        } catch (UnirestException | MalformedURLException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * starts the game
@@ -200,7 +193,9 @@ public class Adventure {
      * @param args
      */
     public static void main(String[] args) {
-        load("/Users/SarahMenza/Downloads/siebel.json");
+        String url = UrlLoader.getUrlContents("file:///Users/SarahMenza/Documents/withMonsters.txt");
+        Gson gson = new Gson();
+        layout = gson.fromJson(url, Layout.class);
         start(layout);
         Scanner scanner = new Scanner(System.in);
         while(!gameIsOver) {
