@@ -6,9 +6,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class LayoutTest {
+public class ItemTest {
 
-    private static final String LAYOUT_JSON = "{\n" +
+    private static final String ITEM_JSON = "{\n" +
             "  \"startingRoom\": \"MatthewsStreet\",\n" +
             "  \"endingRoom\": \"Siebel1314\",\n" +
             "    \"player\":\n" +
@@ -58,38 +58,34 @@ public class LayoutTest {
             "  ]\n" +
             "}";
 
-    private static Layout layout;
+    private static Item[] playerItems;
+    private static Item[] roomItems;
 
     @Before
     public void setUp() throws Exception {
         Gson gson = new Gson();
-        layout = gson.fromJson(LAYOUT_JSON,Layout.class);
+        Layout layout = gson.fromJson(ITEM_JSON,Layout.class);
+        roomItems = layout.getRooms()[0].getItems();
+        playerItems = layout.getPlayer().getItems();
     }
 
     @Test
-    public void getStartingRoom() {
-        assertEquals("MatthewsStreet",layout.getStartingRoom());
+    public void getNameOfPlayerItems() {
+        assertEquals("pom-pom", playerItems[0].getName());
     }
 
     @Test
-    public void getEndingRoom() {
-        assertEquals("Siebel1314",layout.getEndingRoom());
+    public void getNameOfRoomItems() {
+        assertEquals("coin", roomItems[0].getName());
     }
 
     @Test
-    public void getRooms() {
-        assertEquals("MatthewsStreet",layout.getRooms()[0].getName());
-        assertEquals("You are on Matthews, outside the Siebel Center", layout.getRooms()[0].getDescription());
+    public void getDamageOfPlayerItems() {
+        assertEquals(20.0, playerItems[0].getDamage(), 0.000000001);
     }
 
     @Test
-    public void getPlayer() {
-        assertEquals("Esarv",layout.getPlayer().getName());
+    public void getDamageOfRoomItems() {
+        assertEquals(20.0, roomItems[0].getDamage(), 0.000000001);
     }
-
-    @Test
-    public void getMonsters() {
-        assertEquals("CookieMonster",layout.getMonsters()[0].getName());
-    }
-
 }

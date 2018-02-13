@@ -6,9 +6,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class LayoutTest {
+public class MonsterTest {
 
-    private static final String LAYOUT_JSON = "{\n" +
+    private static final String MONSTER_JSON = "{\n" +
             "  \"startingRoom\": \"MatthewsStreet\",\n" +
             "  \"endingRoom\": \"Siebel1314\",\n" +
             "    \"player\":\n" +
@@ -58,38 +58,32 @@ public class LayoutTest {
             "  ]\n" +
             "}";
 
-    private static Layout layout;
+    private static Monster monster;
 
     @Before
     public void setUp() throws Exception {
         Gson gson = new Gson();
-        layout = gson.fromJson(LAYOUT_JSON,Layout.class);
+        Layout layout = gson.fromJson(MONSTER_JSON,Layout.class);
+        monster = layout.getMonsters()[0];
     }
 
     @Test
-    public void getStartingRoom() {
-        assertEquals("MatthewsStreet",layout.getStartingRoom());
+    public void getName() {
+        assertEquals("CookieMonster", monster.getName());
     }
 
     @Test
-    public void getEndingRoom() {
-        assertEquals("Siebel1314",layout.getEndingRoom());
+    public void getAttack() {
+        assertEquals(70.0, monster.getAttack(), 0.0000000001);
     }
 
     @Test
-    public void getRooms() {
-        assertEquals("MatthewsStreet",layout.getRooms()[0].getName());
-        assertEquals("You are on Matthews, outside the Siebel Center", layout.getRooms()[0].getDescription());
+    public void getDefense() {
+        assertEquals(100.0, monster.getDefense(), 0.0000000001);
     }
 
     @Test
-    public void getPlayer() {
-        assertEquals("Esarv",layout.getPlayer().getName());
+    public void getHealth() {
+        assertEquals(100.0, monster.getHealth(), 0.0000000001);
     }
-
-    @Test
-    public void getMonsters() {
-        assertEquals("CookieMonster",layout.getMonsters()[0].getName());
-    }
-
 }

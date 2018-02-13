@@ -7,7 +7,7 @@ public class Room {
     private String name;
     private String description;
     private Direction[] directions;
-    private String[] items;
+    private Item[] items;
     // Names of monster to look up in the monster array
     private String[] monstersInRoom;
 
@@ -23,7 +23,7 @@ public class Room {
         return directions;
     }
 
-    public String[] getItems() {
+    public Item[] getItems() {
         return items;
     }
 

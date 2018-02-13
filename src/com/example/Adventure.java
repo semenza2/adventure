@@ -9,10 +9,11 @@ import java.util.Scanner;
 public class Adventure {
 
     private static Room currentRoom = new Room();
-    private static ArrayList<String> currentItems;
+    private static ArrayList<Item> currentItems;
     private static ArrayList<String> monstersInRoom;
-    private static ArrayList<String> myItems;
-    public static Layout layout;
+    private static ArrayList<Item> myItems;
+    private static Layout layout;
+    private static Player player = new Player();
     private static Room[] rooms;
     //keeps input as user enters it, to echo later
     private static String originalInput;
@@ -26,11 +27,13 @@ public class Adventure {
         layout = l;
         myItems = new ArrayList<>();
         rooms = layout.getRooms();
+        player = layout.getPlayer();
         for (int i = 0; i < rooms.length; i++) {
             if (rooms[i].getName().equals(layout.getStartingRoom())) {
                 currentRoom = rooms[i];
             }
         }
+        playerItemsToArrayList();
         itemsToArrayList();
         monstersInRoom();
         statusReport();
@@ -44,6 +47,14 @@ public class Adventure {
             currentItems = new ArrayList<>(Arrays.asList(currentRoom.getItems()));
         }else {
             currentItems = new ArrayList<>();
+        }
+    }
+
+    public static void playerItemsToArrayList() {
+        if (player.getItems() == null) {
+            myItems = new ArrayList<>();
+        }else {
+            myItems = new ArrayList<>(Arrays.asList(player.getItems()));
         }
     }
 
@@ -71,8 +82,8 @@ public class Adventure {
             System.out.println("This room contains nothing");
         } else {
             System.out.println("The current items in your room are: ");
-            for (String e : currentItems) {
-                System.out.println(e);
+            for (Item e : currentItems) {
+                System.out.println(e.getName());
             }
         }
 
@@ -108,9 +119,42 @@ public class Adventure {
             take(input);
         } else if (input.startsWith("drop")) {
             drop(input);
+        } else if (input.equals("playerinfo")) {
+            getPlayerInfo();
+        } else if (input.startsWith("duel")) {
+            duel(input);
         }
         statusReport();
     }
+
+    public static void getPlayerInfo()
+    {
+        System.out.println("Your player is on level: " + player.getLevel());
+        System.out.println("Attack: " + player.getAttack());
+        System.out.println("Defense: " + player.getDefense());
+        System.out.println("Health " + player.getHealth());
+    }
+
+
+    public static void duel(String input) {
+        input = input.substring(5);
+        boolean invalidInput = true;
+        for (int i = 0; i < monstersInRoom.size(); i++) {
+            //making sure input is an option
+            String monster = monstersInRoom.get(i);
+            if (input.equals(monster)) {
+                invalidInput = false;
+                System.out.println(originalInput);
+                //duel
+                break;
+            }
+        }
+        if (invalidInput) {
+            System.out.println("I can't duel that monster");
+        }
+    }
+
+
 
     /**
      * drop an item into room and remove from my own items
@@ -121,8 +165,8 @@ public class Adventure {
         boolean invalidInput = true;
         for (int i = 0; i < myItems.size(); i++) {
             //making sure input is an option
-            String item = myItems.get(i);
-            if (input.equals(item)) {
+            Item item = myItems.get(i);
+            if (input.equals(item.getName())) {
                 invalidInput = false;
                 System.out.println(originalInput);
                 currentItems.add(item);
@@ -144,8 +188,8 @@ public class Adventure {
         boolean invalidInput = true;
         for (int i = 0; i < currentItems.size(); i++){
             //making sure input is an option
-            String item = currentItems.get(i);
-            if (input.contains(item)) {
+            Item item = currentItems.get(i);
+            if (input.contains(item.getName())) {
                 invalidInput = false;
                 System.out.println(originalInput);
                 myItems.add(item);

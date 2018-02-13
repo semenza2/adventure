@@ -6,6 +6,7 @@ public class UrlLoader {
     /**
      * A complete Java class that demonstrates how to read content (text) from a URL
      * using the Java URL and URLConnection classes.
+     * https://alvinalexander.com/blog/post/java/java-how-read-from-url-string-text
      * @author alvin alexander, alvinalexander.com
      */
 

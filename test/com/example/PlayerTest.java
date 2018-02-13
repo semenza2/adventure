@@ -6,9 +6,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class LayoutTest {
+public class PlayerTest {
 
-    private static final String LAYOUT_JSON = "{\n" +
+    private static final String PLAYER_JSON = "{\n" +
             "  \"startingRoom\": \"MatthewsStreet\",\n" +
             "  \"endingRoom\": \"Siebel1314\",\n" +
             "    \"player\":\n" +
@@ -58,38 +58,42 @@ public class LayoutTest {
             "  ]\n" +
             "}";
 
-    private static Layout layout;
+    private static Player player;
 
     @Before
     public void setUp() throws Exception {
         Gson gson = new Gson();
-        layout = gson.fromJson(LAYOUT_JSON,Layout.class);
+        Layout layout = gson.fromJson(PLAYER_JSON,Layout.class);
+        player =layout.getPlayer();
     }
 
     @Test
-    public void getStartingRoom() {
-        assertEquals("MatthewsStreet",layout.getStartingRoom());
+    public void getName() {
+        assertEquals("Esarv", player.getName());
     }
 
     @Test
-    public void getEndingRoom() {
-        assertEquals("Siebel1314",layout.getEndingRoom());
+    public void getItems() {
+        assertEquals(2, player.getItems().length);
     }
 
     @Test
-    public void getRooms() {
-        assertEquals("MatthewsStreet",layout.getRooms()[0].getName());
-        assertEquals("You are on Matthews, outside the Siebel Center", layout.getRooms()[0].getDescription());
+    public void getAttack() {
+        assertEquals(70.0, player.getAttack(), 0.000000001);
     }
 
     @Test
-    public void getPlayer() {
-        assertEquals("Esarv",layout.getPlayer().getName());
+    public void getDefense() {
+        assertEquals(40.0, player.getDefense(), 0.000000001);
     }
 
     @Test
-    public void getMonsters() {
-        assertEquals("CookieMonster",layout.getMonsters()[0].getName());
+    public void getHealth() {
+        assertEquals(100, player.getHealth(), 0.000000001);
     }
 
+    @Test
+    public void getLevel() {
+        assertEquals(2, player.getLevel());
+    }
 }
