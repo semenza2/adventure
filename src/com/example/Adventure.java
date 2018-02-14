@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.net.MalformedURLException;
 import java.util.Scanner;
+import java.util.HashMap;
 
 public class Adventure {
 
@@ -15,10 +16,11 @@ public class Adventure {
     private static Layout layout;
     private static Player player = new Player();
     private static Room[] rooms;
-    //keeps input as user enters it, to echo later
     private static String originalInput;
     private static boolean hasDisengaged;
     private static boolean gameIsOver=false;
+
+    private static final double MAX_HEALTH = 100.0;
 
     /**
      * starts the game
@@ -201,7 +203,7 @@ public class Adventure {
         } else if (input.equalsIgnoreCase("disengage")) {
             hasDisengaged = true;
         } else if (input.equalsIgnoreCase("status")) {
-            duelStatus();
+            duelStatus(monster);
         } else if (input.equalsIgnoreCase("list")) {
             list();
         } else if (input.equalsIgnoreCase("playerinfo")) {
@@ -213,13 +215,19 @@ public class Adventure {
 
     public static void attack(Monster monster) {
         double damage = player.getAttack() - monster.getDefense();
-        monster.setHealth(monster.getHealth() - damage);
+        //if player's attack is stronger than the monster's defense
+        if (damage > 0) {
+            monster.setHealth(monster.getHealth() - damage);
+        }
         if (monster.getHealth() <= 0) {
             System.out.println("You have won the duel!");
             monstersInRoom.remove(monster.getName());
         } else {
             double damageReturned = monster.getAttack() - player.getDefense();
-            player.setHealth(player.getHealth() - damageReturned);
+            //if monsters' attack is larger than player's defense
+            if (damageReturned > 0) {
+                player.setHealth(player.getHealth() - damageReturned);
+            }
             if (player.getHealth() <= 0) {
                 System.out.println("You have died.");
                 System.exit(0);
@@ -242,13 +250,17 @@ public class Adventure {
             return;
         }
         double damage = player.getAttack() + weapon.getDamage() - monster.getDefense();
-        monster.setHealth(monster.getHealth() - damage);
+        if (damage > 0) {
+            monster.setHealth(monster.getHealth() - damage);
+        }
         if (monster.getHealth() <= 0) {
             System.out.println("You have won the duel!");
             monstersInRoom.remove(monster.getName());
         } else {
             double damageReturned = monster.getAttack() - player.getDefense();
-            player.setHealth(player.getHealth() - damageReturned);
+            if (damageReturned > 0) {
+                player.setHealth(player.getHealth() - damageReturned);
+            }
             if (player.getHealth() <= 0) {
                 System.out.println("You have died.");
                 System.exit(0);
@@ -256,8 +268,21 @@ public class Adventure {
         }
     }
 
-    public static void duelStatus() {
-        return;
+    public static void duelStatus(Monster monster) {
+        HashMap<Double,String> hm=new HashMap<Double,String>();
+        hm.put(0.0,"__________");
+        hm.put(10.0,"#_________");
+        hm.put(20.0,"##________");
+        hm.put(30.0, "###_______");
+        hm.put(40.0, "####______");
+        hm.put(50.0, "#####_____");
+        hm.put(60.0, "######____");
+        hm.put(70.0, "#######___");
+        hm.put(80.0, "########__");
+        hm.put(90.0, "#########_");
+        hm.put(100.0, "##########");
+        System.out.println("Player: " + hm.get(player.getHealth()));
+        System.out.println("Monster: " + hm.get(monster.getHealth()));
     }
 
     public static void list() {
