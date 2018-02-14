@@ -21,6 +21,8 @@ public class Adventure {
     private static boolean gameIsOver=false;
 
     private static final double MAX_HEALTH = 100.0;
+    private static final double MAX_DEFENSE = 100.0;
+    private static final double MAX_ATTACK = 100.0;
 
     /**
      * starts the game
@@ -221,6 +223,7 @@ public class Adventure {
         }
         if (monster.getHealth() <= 0) {
             System.out.println("You have won the duel!");
+            updateExperience(monster, player.getLevel());
             monstersInRoom.remove(monster.getName());
         } else {
             double damageReturned = monster.getAttack() - player.getDefense();
@@ -232,6 +235,45 @@ public class Adventure {
                 System.out.println("You have died.");
                 System.exit(0);
             }
+        }
+    }
+
+    public static void updateExperience(Monster monster, int level) {
+        double experience = (((monster.getAttack() + monster.getDefense()) / 2) + monster.getHealth()) * 20;
+        player.setExperience(player.getExperience() + experience);
+        if (player.getExperience() > required(level)) {
+            player.setLevel(level++);
+            levelUp();
+        }
+    }
+
+    public static double required(int level) {
+        if (level == 0) {
+            return 0.0;
+        } else if (level == 1) {
+            return 25.0;
+        } else if (level == 2) {
+            return 50.0;
+        } else {
+            return (required(level - 1) + required(level - 2)) * 1.1;
+        }
+    }
+
+    public static void levelUp() {
+        if ((player.getAttack() * 1.5) > MAX_ATTACK) {
+            player.setAttack(MAX_ATTACK);
+        } else {
+            player.setAttack(player.getAttack() * 1.5);
+        }
+        if ((player.getDefense() * 1.5) > MAX_DEFENSE) {
+            player.setDefense(MAX_DEFENSE);
+        } else {
+            player.setDefense(player.getDefense() * 1.5);
+        }
+        if ((player.getHealth() * 1.3) > MAX_HEALTH) {
+            player.setHealth(MAX_HEALTH);
+        } else {
+            player.setHealth(player.getHealth() * 1.3);
         }
     }
 

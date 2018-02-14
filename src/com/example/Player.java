@@ -7,6 +7,15 @@ public class Player {
     private double defense;
     private double health;
     private int level;
+    private double experience;
+
+    public double getExperience() {
+        return experience;
+    }
+
+    public void setExperience(double experience) {
+        this.experience = experience;
+    }
 
     public String getName() {
         return name;
