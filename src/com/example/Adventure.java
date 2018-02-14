@@ -277,7 +277,7 @@ public class Adventure {
         double experience = (((monster.getAttack() + monster.getDefense()) / 2) + monster.getHealth()) * 20;
         player.setExperience(player.getExperience() + experience);
         if (player.getExperience() > required(level)) {
-            player.setLevel(level++);
+            player.setLevel(level + 1);
             levelUp();
         }
     }
