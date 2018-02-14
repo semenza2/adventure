@@ -102,10 +102,11 @@ public class Adventure {
             }
             System.out.println();
         }
-        //if all monsters are defeated
-        System.out.println("The directions you can move are: ");
-        for (Direction e: currentRoom.getDirections()) {
-            System.out.println(e.getDirectionName());
+        if(monstersInRoom.size() == 0) {
+            System.out.println("The directions you can move are: ");
+            for (Direction e : currentRoom.getDirections()) {
+                System.out.println(e.getDirectionName());
+            }
         }
     }
 
@@ -238,6 +239,40 @@ public class Adventure {
         }
     }
 
+    public static void attackWith(Monster monster, String input) {
+        input = input.substring(12);
+        boolean invalidInput = true;
+        Item weapon = new Item();
+        for (Item e: myItems) {
+            if (input.equalsIgnoreCase(e.getName())) {
+                weapon = e;
+                invalidInput = false;
+            }
+        }
+        if (invalidInput) {
+            System.out.println("I do not have that item to attack with.");
+            return;
+        }
+        double damage = player.getAttack() + weapon.getDamage() - monster.getDefense();
+        if (damage > 0) {
+            monster.setHealth(monster.getHealth() - damage);
+        }
+        if (monster.getHealth() <= 0) {
+            System.out.println("You have won the duel!");
+            updateExperience(monster, player.getLevel());
+            monstersInRoom.remove(monster.getName());
+        } else {
+            double damageReturned = monster.getAttack() - player.getDefense();
+            if (damageReturned > 0) {
+                player.setHealth(player.getHealth() - damageReturned);
+            }
+            if (player.getHealth() <= 0) {
+                System.out.println("You have died.");
+                System.exit(0);
+            }
+        }
+    }
+
     public static void updateExperience(Monster monster, int level) {
         double experience = (((monster.getAttack() + monster.getDefense()) / 2) + monster.getHealth()) * 20;
         player.setExperience(player.getExperience() + experience);
@@ -277,39 +312,6 @@ public class Adventure {
         }
     }
 
-    public static void attackWith(Monster monster, String input) {
-        input = input.substring(12);
-        boolean invalidInput = true;
-        Item weapon = new Item();
-        for (Item e: myItems) {
-            if (input.equalsIgnoreCase(e.getName())) {
-                weapon = e;
-                invalidInput = false;
-            }
-        }
-        if (invalidInput) {
-            System.out.println("I do not have that item to attack with.");
-            return;
-        }
-        double damage = player.getAttack() + weapon.getDamage() - monster.getDefense();
-        if (damage > 0) {
-            monster.setHealth(monster.getHealth() - damage);
-        }
-        if (monster.getHealth() <= 0) {
-            System.out.println("You have won the duel!");
-            monstersInRoom.remove(monster.getName());
-        } else {
-            double damageReturned = monster.getAttack() - player.getDefense();
-            if (damageReturned > 0) {
-                player.setHealth(player.getHealth() - damageReturned);
-            }
-            if (player.getHealth() <= 0) {
-                System.out.println("You have died.");
-                System.exit(0);
-            }
-        }
-    }
-
     public static void duelStatus(Monster monster) {
         HashMap<Double,String> hm=new HashMap<Double,String>();
         hm.put(0.0,"__________");
@@ -323,8 +325,34 @@ public class Adventure {
         hm.put(80.0, "########__");
         hm.put(90.0, "#########_");
         hm.put(100.0, "##########");
-        System.out.println("Player: " + hm.get(player.getHealth()));
-        System.out.println("Monster: " + hm.get(monster.getHealth()));
+        System.out.println("Player: " + hm.get(convert(player.getHealth())));
+        System.out.println("Monster: " + hm.get(convert(player.getHealth())));
+    }
+
+    public static double convert(double health) {
+        if (health <= 0.0) {
+            return 0.0;
+        } else if (health > 0.0 && health <= 10.0) {
+            return 10.0;
+        } else if (health > 10.0 && health <= 20.0) {
+            return 20.0;
+        } else if (health > 20.0 && health <= 30.0) {
+            return 30.0;
+        } else if (health > 30.0 && health <= 40.0) {
+            return 40.0;
+        } else if (health > 40.0 && health <= 50.0) {
+            return 50.0;
+        } else if (health > 50.0 && health <= 60.0) {
+            return 60.0;
+        } else if (health > 60.0 && health <= 70.0) {
+            return 70.0;
+        } else if (health > 70.0 && health <= 80.0) {
+            return 80.0;
+        } else if (health > 80.0 && health <= 90.0) {
+            return 90.0;
+        } else {
+            return 100.0;
+        }
     }
 
     public static void list() {
@@ -384,7 +412,6 @@ public class Adventure {
                 Item item = currentItems.get(i);
                 if (input.contains(item.getName())) {
                     invalidInput = false;
-                    System.out.println("hit");
                     myItems.add(item);
                     currentItems.remove(item);
                     break;
