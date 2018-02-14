@@ -216,6 +216,10 @@ public class Adventure {
         }
     }
 
+    /**
+     * attacking a monster
+     * @param monster the monster you are dueling
+     */
     public static void attack(Monster monster) {
         double damage = player.getAttack() - monster.getDefense();
         //if player's attack is stronger than the monster's defense
@@ -239,6 +243,11 @@ public class Adventure {
         }
     }
 
+    /**
+     * attatcking a monster with an item
+     * @param monster the monster you are dueling
+     * @param input contains the object you want to use
+     */
     public static void attackWith(Monster monster, String input) {
         input = input.substring(12);
         boolean invalidInput = true;
@@ -273,6 +282,11 @@ public class Adventure {
         }
     }
 
+    /**
+     * updates how much experience the player has after winning a battle
+     * @param monster the monster you just defeated
+     * @param level the current level you were on before the battle
+     */
     public static void updateExperience(Monster monster, int level) {
         double experience = (((monster.getAttack() + monster.getDefense()) / 2) + monster.getHealth()) * 20;
         player.setExperience(player.getExperience() + experience);
@@ -282,6 +296,11 @@ public class Adventure {
         }
     }
 
+    /**
+     * the required experinece before you can level up
+     * @param level the current level you are on
+     * @return the required experience to move past that level
+     */
     public static double required(int level) {
         if (level == 0) {
             return 0.0;
@@ -294,6 +313,9 @@ public class Adventure {
         }
     }
 
+    /**
+     * awards an increase in health, attack, and defense when you reach a new level
+     */
     public static void levelUp() {
         if ((player.getAttack() * 1.5) > MAX_ATTACK) {
             player.setAttack(MAX_ATTACK);
@@ -312,6 +334,10 @@ public class Adventure {
         }
     }
 
+    /**
+     * prints the monster and player's updated health status
+     * @param monster the monster you are dueling
+     */
     public static void duelStatus(Monster monster) {
         HashMap<Double,String> hm=new HashMap<Double,String>();
         hm.put(0.0,"__________");
@@ -329,6 +355,11 @@ public class Adventure {
         System.out.println("Monster: " + hm.get(convert(player.getHealth())));
     }
 
+    /**
+     * converts health levels to a multiple of ten so can use hashmap
+     * @param health the current health of player
+     * @return the multiple of ten
+     */
     public static double convert(double health) {
         if (health <= 0.0) {
             return 0.0;
